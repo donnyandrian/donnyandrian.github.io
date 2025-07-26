@@ -2,7 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { personalData } from "@/data/personal-data";
-import { type Variants } from "motion/react";
+import {
+    useMotionValueEvent,
+    useScroll,
+    useTransform,
+    type Variants,
+} from "motion/react";
 import * as m from "motion/react-m";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon, Download04Icon } from "@hugeicons-pro/core-stroke-rounded";
@@ -13,13 +18,10 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import ClassName from "embla-carousel-class-names";
-import { useEffect, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const _vLeftToNormal: Variants = {
     hidden: { opacity: 0, x: -50 },
@@ -84,8 +86,14 @@ const sections = [
 ];
 
 export default function PortfolioPage() {
+    const projectsContainer = useRef<HTMLDivElement>(null);
+    const projects = useRef<HTMLDivElement>(null);
+
     return (
-        <div className="flex flex-col items-center snap-y snap-mandatory *:snap-center *:snap-always *:shrink-0">
+        <div
+            ref={projectsContainer}
+            className="flex flex-col items-center snap-y snap-mandatory *:snap-center *:snap-always *:shrink-0"
+        >
             <m.section
                 className="flex h-dvh items-center justify-center gap-4 *:text-center max-w-5xl mx-8 flex-col lg:flex-row"
                 initial="hidden"
@@ -205,30 +213,34 @@ export default function PortfolioPage() {
                 </div>
             </m.section>
 
+            <section
+                ref={projects}
+                className="flex flex-col w-full max-w-5xl !snap-start *:shrink-0 *:snap-always *:snap-center"
+            >
+                <m.div
+                    className="h-dvh flex items-center justify-center gap-4 flex-col w-full px-10 sticky top-0"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ amount: 0.5 }}
+                >
+                    <m.h2 variants={_vLeftToNormal}>
+                        <span>{sections[1].title}</span>
+                    </m.h2>
+                    <m.p
+                        className="max-w-5xl mx-4 text-base xs:text-lg text-center"
+                        variants={_vLeftToNormal}
+                    >
+                        {sections[1].description}
+                    </m.p>
+
+                    <ProjectCarousel cref={projectsContainer} pref={projects} />
+                </m.div>
+
+                <ProjectScrollSpace />
+            </section>
+
             <m.section
                 className="flex h-dvh items-center justify-center gap-4 flex-col w-full max-w-5xl px-10"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                    amount: 0.5,
-                }}
-            >
-                <m.h2 variants={_vLeftToNormal}>
-                    <span>{sections[1].title}</span>
-                </m.h2>
-
-                <m.p
-                    className="max-w-5xl mx-4 text-base xs:text-lg text-center"
-                    variants={_vLeftToNormal}
-                >
-                    {sections[1].description}
-                </m.p>
-
-                <ProjectCarousel />
-            </m.section>
-
-            <m.section
-                className="flex h-dvh items-center justify-center gap-4 flex-col w-full10"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{
@@ -244,7 +256,7 @@ export default function PortfolioPage() {
             </m.section>
 
             <m.section
-                className="flex h-dvh items-center justify-center gap-4 flex-col w-full10"
+                className="flex h-dvh items-center justify-center gap-4 flex-col w-full max-w-5xl px-10"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{
@@ -282,41 +294,43 @@ function SummaryFeatures() {
     );
 }
 
-function ProjectCarousel() {
+function ProjectCarousel({
+    cref,
+    pref,
+}: {
+    cref: React.RefObject<HTMLDivElement | null>;
+    pref: React.RefObject<HTMLDivElement | null>;
+}) {
     const [api, setApi] = useState<CarouselApi>();
+    const { scrollYProgress } = useScroll({
+        target: pref,
+        offset: ["start start", "end end"],
+        container: cref,
+    });
+    const scrollIndex = useTransform(() => {
+        const n = personalData.projects.length;
+        return Math.min(Math.floor(scrollYProgress.get() * n), n - 1);
+    });
 
-    useEffect(() => {
-        if (!api) return;
+    useMotionValueEvent(scrollIndex, "change", (latest) => {
+        const index = Math.round(latest);
+        console.log(index);
 
-        const timeout = setTimeout(() => {
-            const autoplay = api.plugins().autoplay;
-            if (!autoplay) return;
-
-            autoplay.play();
-        }, 3000);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [api]);
+        api?.scrollTo(index);
+    });
 
     return (
         <m.div
             className="flex items-center justify-center gap-4 flex-col w-full max-w-[70dvw] mt-8"
             variants={_vFadeInShort}
             custom={0.25}
+            style={{ x: scrollYProgress }}
         >
             <Carousel
                 className="w-full"
                 setApi={setApi}
-                opts={{ loop: true }}
-                plugins={[
-                    Autoplay({
-                        delay: 5000,
-                        playOnInit: false,
-                    }),
-                    ClassName(),
-                ]}
+                opts={{ loop: true, watchDrag: false }}
+                plugins={[ClassName()]}
             >
                 <CarouselContent>
                     {personalData.projects.map((project, index) => (
@@ -325,11 +339,15 @@ function ProjectCarousel() {
                             className="basis-2/3 select-none"
                         >
                             <m.div
-                                className="bg-accent text-card-foreground flex rounded-md border-4 aspect-video opacity-30 transition-all duration-300 ease-out in-[.is-snapped]:opacity-100"
                                 variants={_vFadeInShort}
-                                custom={pyramidIndex(index, personalData.projects.length)/3}
+                                custom={
+                                    pyramidIndex(
+                                        index,
+                                        personalData.projects.length,
+                                    ) / 3
+                                }
                             >
-                                <div className="flex items-center justify-center w-full h-full">
+                                <div className="bg-accent text-card-foreground flex rounded-md border-4 aspect-video opacity-30 transition-all duration-300 ease-out in-[.is-snapped]:opacity-100">
                                     {index}
                                 </div>
                             </m.div>
@@ -345,8 +363,6 @@ function ProjectCarousel() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="not-xs:hidden" />
-                <CarouselNext className="not-xs:hidden" />
             </Carousel>
         </m.div>
     );
@@ -354,3 +370,22 @@ function ProjectCarousel() {
 
 const pyramidIndex = (index: number, total: number) =>
     index <= Math.trunc(total / 2) ? index : total - index;
+
+function ProjectScrollSpace() {
+    const spaces = useMemo(() => {
+        const _spaces = [];
+
+        for (let i = 0; i < personalData.projects.length - 2; i++) {
+            _spaces.push(<div key={i} className="h-dvh shrink-0" />);
+        }
+
+        return _spaces;
+    }, [personalData.projects.length]);
+
+    return (
+        <>
+            {spaces}
+            <div className="h-dvh shrink-0 !snap-end" />
+        </>
+    );
+}
