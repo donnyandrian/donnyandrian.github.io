@@ -14,6 +14,11 @@
     --text-4\.5xl: 2.625rem;
     --text-4\.5xl--line-height: 1;
 
+    --text-shadow-hard-xs: 0 1px 0 rgb(0, 0, 0 / 0.25);
+    --text-shadow-hard-sm: 0 2px 0 rgb(0, 0, 0 / 0.25);
+    --text-shadow-hard-md: 0 4px 0 rgb(0, 0, 0 / 0.25);
+    --text-shadow-hard-lg: 0 6px 0 rgb(0, 0, 0 / 0.25);
+
     --color-xellanix-50: color-mix(in oklab, #f1f7fe 100%, transparent);
     --color-xellanix-100: color-mix(in oklab, #e2effc 100%, transparent);
     --color-xellanix-200: color-mix(in oklab, #bfdef8 100%, transparent);
@@ -166,7 +171,6 @@
         @apply text-center;
     }
     h2 > span {
-        @apply font-extrabold text-4.5xl xs:text-5xl sm:text-6xl;
-        @apply text-transparent bg-clip-text bg-linear-35/oklch from-xellanix-900 to-xellanix-900/10 box-decoration-clone;
+        @apply font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-900;
     }
 }

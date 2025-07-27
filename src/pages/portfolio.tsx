@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/carousel";
 import ClassName from "embla-carousel-class-names";
 import { useMemo, useRef, useState } from "react";
+import { Navbar } from "@/components/navbar";
 
 const _vLeftToNormal: Variants = {
     hidden: { opacity: 0, x: -50 },
@@ -40,6 +41,15 @@ const _vRightCustomToNormal: Variants = {
     visible: {
         opacity: 1,
         x: 0,
+    },
+};
+
+const _vTopCustomToNormal: Variants = {
+    hidden: (custom: number = 1) => ({ opacity: 0, y: -50 * custom }),
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: defaultConfig,
     },
 };
 
@@ -81,17 +91,66 @@ const sections = [
             "Greatness is rarely a single breakthrough. It is the careful assembly of many small, proven components working in perfect harmony.",
     },
     {
-        title: <>From <span className="text-xellanix-900">Blueprint <span className="text-xellanix-600">to</span> Tangible</span> Form</>,
+        title: (
+            <>
+                From{" "}
+                <span className="text-xellanix-900">
+                    Blueprint <span className="text-accent">to</span> Tangible
+                </span>{" "}
+                Form
+            </>
+        ),
         description:
             "A plan is only a promise of what could be. True value is created only when intellect is forged into action, transforming a vision into a concrete reality that can be seen and used.",
     },
     {
-        title: <>The Pursuit of Mastery</>,
+        title: (
+            <>
+                <m.span
+                    className="text-xellanix-900/30 inline-block"
+                    variants={_vTopCustomToNormal}
+                    custom={0.75}
+                >
+                    The
+                </m.span>{" "}
+                <m.span
+                    className="inline-block"
+                    variants={_vTopCustomToNormal}
+                    custom={0.75}
+                >
+                    Pursuit
+                </m.span>{" "}
+                <m.span
+                    className="inline-block"
+                    variants={_vTopCustomToNormal}
+                    custom={0.75}
+                >
+                    of
+                </m.span>{" "}
+                <m.span
+                    className="text-accent text-shadow-hard-lg text-shadow-xellanix-200/75 inline-block"
+                    variants={_vTopCustomToNormal}
+                    custom={0.75}
+                >
+                    Mastery
+                </m.span>
+            </>
+        ),
         description:
             "Craftsmanship is not a destination, but a continuous journey of refinement. The achievements here mark a formal dedication to that ongoing process of learning, growth, and improvement.",
     },
     {
-        title: <>Let's Build What's Next</>,
+        title: (
+            <>
+                <span className="inline-block border-b-4 border-accent">
+                    Let's Build
+                </span>{" "}
+                <span className="italic">
+                    <span className="text-xellanix-900/30">What's</span>{" "}
+                    <span className="text-accent">Next</span>
+                </span>
+            </>
+        ),
         description:
             "The most meaningful results are born from collaboration. If this approach and body of work resonates with you, a conversation is the logical next step.",
     },
@@ -107,6 +166,7 @@ export default function PortfolioPage() {
             className="flex flex-col items-center snap-y snap-mandatory *:snap-center *:snap-always *:shrink-0"
         >
             <m.section
+                id="home"
                 className="flex h-dvh items-center justify-center gap-4 *:text-center max-w-5xl mx-8 flex-col lg:flex-row"
                 initial="hidden"
                 whileInView="visible"
@@ -127,9 +187,12 @@ export default function PortfolioPage() {
                         <span className="text-accent inline-flex">
                             {personalData.surname}
                         </span>
-                        <span className="inline whitespace-nowrap italic">
+                        <span className="inline whitespace-nowrap italic text-xellanix-900">
                             {" "}
-                            <span className="text-foreground/30">is</span> Here!
+                            <span className="text-xellanix-900/30">
+                                is
+                            </span>{" "}
+                            Here!
                         </span>
                     </m.h1>
 
@@ -193,6 +256,7 @@ export default function PortfolioPage() {
             </m.section>
 
             <m.section
+                id="skills"
                 className="flex h-dvh items-center justify-center gap-4 flex-col max-w-5xl mx-10 z-10 relative"
                 initial="hidden"
                 whileInView="visible"
@@ -206,7 +270,9 @@ export default function PortfolioPage() {
                 />
 
                 <m.h2 variants={_vFadeInShort} custom={0}>
-                    <span>{sections[0].title}</span>
+                    <span className="text-transparent bg-clip-text bg-linear-35/oklch from-xellanix-900 from-35% to-xellanix-900/10 box-decoration-clone">
+                        {sections[0].title}
+                    </span>
                 </m.h2>
 
                 <m.p
@@ -226,6 +292,7 @@ export default function PortfolioPage() {
             </m.section>
 
             <section
+                id="projects"
                 ref={projects}
                 className="flex flex-col w-full !snap-start *:shrink-0 *:snap-always *:snap-center"
             >
@@ -236,7 +303,7 @@ export default function PortfolioPage() {
                     viewport={{ amount: 0.5 }}
                 >
                     <m.h2 variants={_vLeftToNormal}>
-                        <div className="font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-500">
+                        <div className="font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-900/30">
                             {sections[1].title}
                         </div>
                     </m.h2>
@@ -254,6 +321,7 @@ export default function PortfolioPage() {
             </section>
 
             <m.section
+                id="achievements"
                 className="flex h-dvh items-center justify-center gap-4 flex-col w-full max-w-5xl px-10"
                 initial="hidden"
                 whileInView="visible"
@@ -264,25 +332,53 @@ export default function PortfolioPage() {
                 <m.h2>
                     <span>{sections[2].title}</span>
                 </m.h2>
-                <m.p className="max-w-5xl mx-4 text-base xs:text-lg text-center">
+                <m.p
+                    className="max-w-5xl mx-4 text-base xs:text-lg text-center"
+                    variants={_vTopCustomToNormal}
+                    custom={1}
+                >
                     {sections[2].description}
                 </m.p>
             </m.section>
 
             <m.section
-                className="flex h-dvh items-center justify-center gap-4 flex-col w-full max-w-5xl px-10"
+                id="contact"
+                className="flex h-dvh items-center justify-center gap-8 flex-row w-full max-w-7xl px-10 relative"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{
                     amount: 0.5,
                 }}
             >
-                <m.h2>
-                    <span>{sections[3].title}</span>
-                </m.h2>
-                <m.p className="max-w-5xl mx-4 text-base xs:text-lg text-center">
-                    {sections[3].description}
-                </m.p>
+                <m.div
+                    className="w-full absolute top-0 px-10 h-16 flex items-center"
+                    variants={{
+                        hidden: { opacity: 0, visibility: "hidden" },
+                        visible: {
+                            opacity: 1,
+                            visibility: "visible",
+                            transition: {
+                                ...delayedConfig(1, 1),
+                                duration: 1,
+                            },
+                        },
+                    }}
+                >
+                    <Navbar />
+                </m.div>
+
+                <div className="flex flex-col basis-3/7 items-start justify-center gap-4 h-full">
+                    <m.h2 className="text-left">
+                        <div className="font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-900 flex flex-col gap-y-2 items-start">
+                            {sections[3].title}
+                        </div>
+                    </m.h2>
+                    <m.p className="text-base xs:text-lg text-left">
+                        {sections[3].description}
+                    </m.p>
+                </div>
+
+                <div className="flex flex-col basis-4/7 items-center justify-center gap-4 bg-slate-100 h-full max-h-[calc(100dvh-8rem)]"></div>
             </m.section>
         </div>
     );
@@ -402,7 +498,10 @@ function ProjectScrollSpace() {
     const spaces = useMemo(() => {
         const _spaces = [];
 
-        for (let i = 0; i < personalData.projects.length - 2; i++) {
+        const desiredLength =
+            Math.ceil(personalData.projects.length * 0.75) - 2;
+
+        for (let i = 0; i < desiredLength; i++) {
             _spaces.push(<div key={i} className="h-dvh shrink-0" />);
         }
 
