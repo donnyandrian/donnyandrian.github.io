@@ -254,7 +254,7 @@ export const personalData = {
             },
         },
         {
-            title: "Image Merger",
+            title: "Xellanix ImageMerger",
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A utility application for merging multiple images from a file or clipboard, including screenshots, into a new file.",
@@ -264,7 +264,7 @@ export const personalData = {
             },
         },
         {
-            title: "MasterTools",
+            title: "Xellanix MasterTools",
             techStack: ["C++", "WinUI 2", "WinRT"],
             description:
                 "An application with a set of unique and creative features, made with intention and love.",
@@ -274,7 +274,7 @@ export const personalData = {
             },
         },
         {
-            title: "PickColor",
+            title: "Xellanix PickColor",
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A simple app to quickly capture colors on the screen, as well as provide several color variants related to the selected color.",
@@ -284,7 +284,7 @@ export const personalData = {
             },
         },
         {
-            title: "QuickRename",
+            title: "Xellanix QuickRename",
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A utility application for renaming multiple files (and folders) at once with the desired format, such as order, date, etc.",

@@ -12,7 +12,11 @@ import * as m from "motion/react-m";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon, Download04Icon } from "@hugeicons-pro/core-stroke-rounded";
 import { Badge } from "@/components/ui/badge";
-import { delayedConfig, transitionEffects } from "@/lib/motion-transition";
+import {
+    defaultConfig,
+    delayedConfig,
+    transitionEffects,
+} from "@/lib/motion-transition";
 import { LinkedList } from "@/components/linked-list";
 import {
     Carousel,
@@ -25,6 +29,14 @@ import { useMemo, useRef, useState } from "react";
 
 const _vLeftToNormal: Variants = {
     hidden: { opacity: 0, x: -50 },
+    visible: {
+        opacity: 1,
+        x: 0,
+    },
+};
+
+const _vRightCustomToNormal: Variants = {
+    hidden: (custom: number = 1) => ({ opacity: 0, x: 50 * custom }),
     visible: {
         opacity: 1,
         x: 0,
@@ -64,22 +76,22 @@ const _vFadeInShort: Variants = {
 
 const sections = [
     {
-        title: "Every Great Project Starts Here",
+        title: <>Every Great Project Starts Here</>,
         description:
             "Greatness is rarely a single breakthrough. It is the careful assembly of many small, proven components working in perfect harmony.",
     },
     {
-        title: "Where Theory Becomes Tangible",
+        title: <>From <span className="text-xellanix-900">Blueprint <span className="text-xellanix-600">to</span> Tangible</span> Form</>,
         description:
-            "A tool is only potential until it is put to use. This is where individual skills are woven together, transforming abstract concepts into a functional and meaningful whole.",
+            "A plan is only a promise of what could be. True value is created only when intellect is forged into action, transforming a vision into a concrete reality that can be seen and used.",
     },
     {
-        title: "A Commitment to the Craft",
+        title: <>The Pursuit of Mastery</>,
         description:
             "Craftsmanship is not a destination, but a continuous journey of refinement. The achievements here mark a formal dedication to that ongoing process of learning, growth, and improvement.",
     },
     {
-        title: "Let's Build What's Next",
+        title: <>Let's Build What's Next</>,
         description:
             "The most meaningful results are born from collaboration. If this approach and body of work resonates with you, a conversation is the logical next step.",
     },
@@ -215,16 +227,18 @@ export default function PortfolioPage() {
 
             <section
                 ref={projects}
-                className="flex flex-col w-full max-w-5xl !snap-start *:shrink-0 *:snap-always *:snap-center"
+                className="flex flex-col w-full !snap-start *:shrink-0 *:snap-always *:snap-center"
             >
                 <m.div
-                    className="h-dvh flex items-center justify-center gap-4 flex-col w-full px-10 sticky top-0"
+                    className="h-dvh flex items-center justify-center gap-4 flex-col w-full max-w-5xl mx-auto px-10 sticky top-0"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ amount: 0.5 }}
                 >
                     <m.h2 variants={_vLeftToNormal}>
-                        <span>{sections[1].title}</span>
+                        <div className="font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-500">
+                            {sections[1].title}
+                        </div>
                     </m.h2>
                     <m.p
                         className="max-w-5xl mx-4 text-base xs:text-lg text-center"
@@ -312,19 +326,15 @@ function ProjectCarousel({
         return Math.min(Math.floor(scrollYProgress.get() * n), n - 1);
     });
 
-    useMotionValueEvent(scrollIndex, "change", (latest) => {
-        const index = Math.round(latest);
-        console.log(index);
-
-        api?.scrollTo(index);
-    });
+    useMotionValueEvent(scrollIndex, "change", (latest) =>
+        api?.scrollTo(latest),
+    );
 
     return (
         <m.div
             className="flex items-center justify-center gap-4 flex-col w-full max-w-[70dvw] mt-8"
             variants={_vFadeInShort}
             custom={0.25}
-            style={{ x: scrollYProgress }}
         >
             <Carousel
                 className="w-full"
@@ -336,9 +346,10 @@ function ProjectCarousel({
                     {personalData.projects.map((project, index) => (
                         <CarouselItem
                             key={index}
-                            className="basis-2/3 select-none"
+                            className="basis-2/3 select-none flex flex-col items-center"
                         >
                             <m.div
+                                className="w-full"
                                 variants={_vFadeInShort}
                                 custom={
                                     pyramidIndex(
@@ -352,14 +363,30 @@ function ProjectCarousel({
                                 </div>
                             </m.div>
 
-                            <div className="flex flex-col gap-2 text-center w-full mt-4 relative opacity-0 transition-all duration-300 ease-out in-[.is-snapped]:opacity-100">
-                                <h3 className="font-semibold text-lg xs:text-xl text-accent relative">
+                            <m.div
+                                className="flex flex-col gap-2 text-center w-3/2 mt-4 relative"
+                                initial="hidden"
+                                whileInView="visible"
+                                transition={{
+                                    ...defaultConfig,
+                                    delay: 0.15,
+                                }}
+                                viewport={{ amount: 0.95 }}
+                                custom={2}
+                            >
+                                <m.h3
+                                    className="font-bold text-lg xs:text-xl text-accent relative"
+                                    variants={_vRightCustomToNormal}
+                                >
                                     {project.title}
-                                </h3>
-                                <p className={"text-sm xs:text-base xs:mx-12"}>
+                                </m.h3>
+                                <m.p
+                                    className={"text-xs xs:text-sm xs:mx-12"}
+                                    variants={_vRightCustomToNormal}
+                                >
                                     {project.description}
-                                </p>
-                            </div>
+                                </m.p>
+                            </m.div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
