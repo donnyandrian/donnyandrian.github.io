@@ -2,9 +2,9 @@ import { date } from "@/lib/utils";
 import type { TimelineEvent } from "@/types";
 import {
     GithubIcon,
+    InstagramIcon,
     LinkedinIcon,
     Mail01Icon,
-    Call02Icon,
 } from "@hugeicons-pro/core-stroke-rounded";
 
 const skillsTimeline: TimelineEvent[] = [
@@ -110,24 +110,34 @@ export const personalData = {
     contact: {
         social: [
             {
-                name: "Email",
-                url: `mailto:alex.doe@example.com`,
-                icon: Mail01Icon,
-            },
-            {
-                name: "Tel",
-                url: "tel:+11234567890",
-                icon: Call02Icon,
-            },
-            {
-                name: "GitHub",
-                url: "https://github.com/your-username",
-                icon: GithubIcon,
+                name: "Instagram",
+                url: "https://www.instagram.com/do.and.voidptr/",
+                text: "@do.and.voidptr",
+                icon: InstagramIcon,
             },
             {
                 name: "LinkedIn",
-                url: "https://www.linkedin.com/in/your-username/",
+                url: "https://www.linkedin.com/in/donny-andrian-x05/",
+                text: "donny-andrian-x05",
                 icon: LinkedinIcon,
+            },
+            {
+                name: "Email",
+                url: `mailto:donnyandrian18@gmail.com`,
+                text: "donnyandrian18@gmail.com",
+                icon: Mail01Icon,
+            },
+            {
+                name: "GitHub",
+                url: "https://github.com/xellanix",
+                text: "@xellanix",
+                icon: GithubIcon,
+            },
+            {
+                name: "GitHub",
+                url: "https://github.com/donnyandrian",
+                text: "@donnyandrian",
+                icon: GithubIcon,
             },
         ],
     },

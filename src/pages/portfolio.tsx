@@ -9,8 +9,8 @@ import {
     type Variants,
 } from "motion/react";
 import * as m from "motion/react-m";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Mail01Icon, Download04Icon } from "@hugeicons-pro/core-stroke-rounded";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import { Download04Icon } from "@hugeicons-pro/core-stroke-rounded";
 import { Badge } from "@/components/ui/badge";
 import {
     defaultConfig,
@@ -27,6 +27,7 @@ import {
 import ClassName from "embla-carousel-class-names";
 import { useMemo, useRef, useState } from "react";
 import { Navbar } from "@/components/navbar";
+import { Separator } from "@/components/ui/separator";
 
 const _vLeftToNormal: Variants = {
     hidden: { opacity: 0, x: -50 },
@@ -58,6 +59,16 @@ const _vBottomToNormal: Variants = {
     visible: (index: number) => ({
         opacity: 1,
         y: 0,
+        transition: delayedConfig(index),
+    }),
+};
+
+const _vBottomRightToNormal: Variants = {
+    hidden: { opacity: 0, y: 50, x: 50 },
+    visible: (index: number) => ({
+        opacity: 1,
+        y: 0,
+        x: 0,
         transition: delayedConfig(index),
     }),
 };
@@ -205,43 +216,11 @@ export default function PortfolioPage() {
 
                     <div className="flex lg:flex-col gap-4 items-center justify-center my-2 xs:my-4 select-none">
                         <m.div variants={_vBottomToNormal} custom={0}>
-                            <Button
-                                asChild
-                                size={"lg"}
-                                variant={"accent"}
-                                className="not-xs:h-10 not-xs:rounded-sm not-xs:gap-1.5 not-xs:px-3 not-xs:has-[>svg]:px-2.5"
-                            >
-                                <a href={personalData.contact.social[0].url}>
-                                    <HugeiconsIcon
-                                        icon={Mail01Icon}
-                                        className="size-5 xs:size-6"
-                                        strokeWidth={2}
-                                    />
-                                    <span className="text-base xs:text-xl">
-                                        Start Hiring
-                                    </span>
-                                </a>
-                            </Button>
+                            <HireButton />
                         </m.div>
 
                         <m.div variants={_vBottomToNormal} custom={1}>
-                            <Button
-                                variant={"outline"}
-                                size={"lg"}
-                                asChild
-                                className="not-xs:h-10 not-xs:rounded-sm not-xs:gap-1.5 not-xs:px-3 not-xs:has-[>svg]:px-2.5"
-                            >
-                                <a href="/" download>
-                                    <HugeiconsIcon
-                                        icon={Download04Icon}
-                                        className="size-5 xs:size-6"
-                                        strokeWidth={2}
-                                    />
-                                    <span className="text-sm xs:text-lg">
-                                        Get CV
-                                    </span>
-                                </a>
-                            </Button>
+                            <DownloadCVButton />
                         </m.div>
                     </div>
 
@@ -343,7 +322,7 @@ export default function PortfolioPage() {
 
             <m.section
                 id="contact"
-                className="flex h-dvh items-center justify-center gap-8 flex-row w-full max-w-7xl px-10 relative"
+                className="@container/contact flex h-dvh items-center justify-center gap-4 xs:gap-6 sm:gap-8 flex-col sm:flex-row w-full max-w-7xl px-10 sm:px-16 md:px-24 relative"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{
@@ -351,7 +330,7 @@ export default function PortfolioPage() {
                 }}
             >
                 <m.div
-                    className="w-full absolute top-0 px-10 h-16 flex items-center"
+                    className="w-full absolute top-0 px-10 sm:px-16 md:px-24 h-16 flex items-center"
                     variants={{
                         hidden: { opacity: 0, visibility: "hidden" },
                         visible: {
@@ -367,20 +346,80 @@ export default function PortfolioPage() {
                     <Navbar />
                 </m.div>
 
-                <div className="flex flex-col basis-3/7 items-start justify-center gap-4 h-full">
-                    <m.h2 className="text-left">
+                <div className="flex flex-col items-start justify-center gap-4 sm:h-full">
+                    <m.h2 className="text-left" variants={_vLeftToNormal}>
                         <div className="font-extrabold text-4.5xl xs:text-5xl sm:text-6xl text-xellanix-900 flex flex-col gap-y-2 items-start">
                             {sections[3].title}
                         </div>
                     </m.h2>
-                    <m.p className="text-base xs:text-lg text-left">
+                    <m.p
+                        className="text-base xs:text-lg text-left"
+                        variants={_vLeftToNormal}
+                    >
                         {sections[3].description}
                     </m.p>
+
+                    <div className="flex flex-row gap-4 items-center justify-center my-2 xs:my-4 select-none">
+                        <m.div variants={_vBottomToNormal} custom={0}>
+                            <HireButton />
+                        </m.div>
+
+                        <m.div variants={_vBottomToNormal} custom={1}>
+                            <DownloadCVButton />
+                        </m.div>
+                    </div>
                 </div>
 
-                <div className="flex flex-col basis-4/7 items-center justify-center gap-4 bg-slate-100 h-full max-h-[calc(100dvh-8rem)]"></div>
+                <Separator
+                    orientation="vertical"
+                    className="!h-1/2 !w-0 border-l-2 border-dashed border-xellanix-900/30 bg-transparent not-sm:hidden"
+                />
+
+                <div className="flex items-start not-sm:w-full gap-x-8 gap-y-4 xs:gap-x-12 xs:gap-y-6 sm:gap-x-16 sm:gap-y-8 not-sm:flex-row flex-col @3.5xl/contact:flex-row sm:py-8 not-sm:flex-wrap not-sm:mt-8 @max-3xs/contact:[&>ul:last-child]:flex-row @max-3xs/contact:[&>ul:last-child]:gap-x-8 not-sm:[&>ul:first-child]:w-4/10 @max-2xs/contact:[&>ul:first-child]:w-9/20">
+                    <ContactList />
+                </div>
             </m.section>
         </div>
+    );
+}
+
+function HireButton() {
+    return (
+        <Button
+            asChild
+            size={"lg"}
+            variant={"accent"}
+            className="not-xs:h-10 not-xs:rounded-sm not-xs:gap-1.5 not-xs:px-3 not-xs:has-[>svg]:px-2.5"
+        >
+            <a href={personalData.contact.social[2].url}>
+                <HugeiconsIcon
+                    icon={personalData.contact.social[2].icon}
+                    className="size-5 xs:size-6"
+                    strokeWidth={2}
+                />
+                <span className="text-sm xs:text-lg">Start Hiring</span>
+            </a>
+        </Button>
+    );
+}
+
+function DownloadCVButton() {
+    return (
+        <Button
+            size={"lg"}
+            variant={"outline"}
+            asChild
+            className="not-xs:h-10 not-xs:rounded-sm not-xs:gap-1.5 not-xs:px-3 not-xs:has-[>svg]:px-2.5"
+        >
+            <a href="/" download>
+                <HugeiconsIcon
+                    icon={Download04Icon}
+                    className="size-5 xs:size-6"
+                    strokeWidth={2}
+                />
+                <span className="text-sm xs:text-lg">Get CV</span>
+            </a>
+        </Button>
     );
 }
 
@@ -513,5 +552,78 @@ function ProjectScrollSpace() {
             {spaces}
             <div className="h-dvh shrink-0 !snap-end" />
         </>
+    );
+}
+
+function ContactList() {
+    const list = useMemo(() => {
+        const split = [];
+        const batchSize = 3;
+        const socials = personalData.contact.social;
+
+        for (let i = 0; i < socials.length; i += batchSize) {
+            const fragments = [];
+            for (const social of socials.slice(i, i + batchSize)) {
+                const t = i + fragments.length;
+
+                fragments.push(<ContactItem key={t} order={t} {...social} />);
+            }
+
+            split.push(
+                <ul
+                    className="flex flex-col items-center justify-center gap-4 xs:gap-8 max-h-[calc(100dvh-8rem)]"
+                    key={i}
+                >
+                    {fragments}
+                </ul>,
+            );
+        }
+
+        return split;
+    }, [personalData.contact.social]);
+
+    return <>{list}</>;
+}
+
+function ContactItem({
+    text,
+    icon,
+    url,
+    name,
+    order,
+}: {
+    text: string;
+    icon: IconSvgElement;
+    url: string;
+    name: string;
+    order: number;
+}) {
+    return (
+        <m.li
+            className="flex flex-col items-start w-full"
+            variants={_vBottomRightToNormal}
+            custom={order}
+        >
+            <div className="flex flex-row gap-1 xs:gap-2 items-center">
+                <HugeiconsIcon
+                    icon={icon}
+                    strokeWidth={2}
+                    className="size-4 xs:size-5"
+                />
+                <div className="font-bold inline-flex text-nowrap text-sm xs:text-base">
+                    {name}
+                </div>
+            </div>
+            <Button
+                variant={"link"}
+                size={"link"}
+                asChild
+                className="ml-5 xs:ml-7 text-xs xs:text-sm py-0.5 xs:py-1"
+            >
+                <a href={url} target="_blank">
+                    {text}
+                </a>
+            </Button>
+        </m.li>
     );
 }

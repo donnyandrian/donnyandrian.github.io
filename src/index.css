@@ -9,6 +9,8 @@
 
     --breakpoint-xs: 30rem;
 
+    --container-3\.5xl: 52rem;
+
     --text-2xs: 0.625rem;
     --text-2xs--line-height: calc(0.75 / 0.625);
     --text-4\.5xl: 2.625rem;
