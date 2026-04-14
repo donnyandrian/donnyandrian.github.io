@@ -15,6 +15,12 @@ export default defineConfig({
             },
         }),
     ],
+    base: "./",
+    build: {
+        assetsDir: "./",
+        assetsInlineLimit: 0,
+        minify: true,
+    },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
