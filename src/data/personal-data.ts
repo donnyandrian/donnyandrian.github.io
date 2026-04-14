@@ -1,4 +1,4 @@
-import { date } from "@/lib/utils";
+import { countYears, date } from "@/lib/utils";
 import type { TimelineEvent } from "@/types";
 import {
     GithubIcon,
@@ -13,9 +13,9 @@ const skillsTimeline: TimelineEvent[] = [
         name: "Windows App SDK",
         icon: "windows",
         startDate: date(2017),
-        endDate: undefined,
+        endDate: date(2026),
     },
-    { name: "C++", icon: "cpp", startDate: date(2020), endDate: undefined },
+    { name: "C++", icon: "cpp", startDate: date(2020), endDate: date(2026) },
     {
         name: "JavaScript",
         icon: "js",
@@ -94,10 +94,10 @@ export const personalData = {
     name: "Donny Andrian",
     surname: "Donny",
     summaryFeatures: [
-        "1yr React TS/JS",
-        "5yr C++",
-        "3yr C#",
-        "8yr Windows App Dev",
+        `${Math.floor(countYears(skillsTimeline[5].startDate, skillsTimeline[5].endDate))}yr React TS/JS`,
+        `${Math.floor(countYears(skillsTimeline[2].startDate, skillsTimeline[2].endDate))}yr C++`,
+        `${Math.floor(countYears(skillsTimeline[0].startDate, skillsTimeline[0].endDate))}yr C#`,
+        `${Math.floor(countYears(skillsTimeline[1].startDate, skillsTimeline[1].endDate))}yr Windows App Dev`,
         "4.0 GPA",
     ],
     initials: "DA",
@@ -193,9 +193,10 @@ export const personalData = {
             ],
             description:
                 "A website to make it easy to apply your photos to registered twibbons, for FREE. This website has been integrated with machine learning models, to speed up the photo adjustment process, so that the results are maximized.",
+            hero: "./projects/twivent/index.png",
             link: {
-                label: "Twivent - Twibbon Event",
-                href: "https://xellanix.github.io/twivent/",
+                homepage: "https://xellanix.github.io/twivent/",
+                github: "https://github.com/xellanix/twivent/",
             },
         },
         {
@@ -213,9 +214,10 @@ export const personalData = {
             ],
             description:
                 "A website to play and display lyrics based on the song added. The focus of this website is on a unique and animated look.",
+            hero: "./projects/ambient/index.png",
             link: {
-                label: "Xellanix Ambient",
-                href: "https://xellanix.github.io/xellanix-ambient/",
+                homepage: "https://xellanix.github.io/ambient/",
+                github: "https://github.com/xellanix/xellanix-ambient/",
             },
         },
         {
@@ -231,9 +233,10 @@ export const personalData = {
             ],
             description:
                 "A concise data set management website, with powerful features that give you a quick overview of the data set. It also provides predictive results based on dynamic interpolation.",
+            hero: "./projects/quick-seeker/index.png",
             link: {
-                label: "Xellanix QuickSeeker",
-                href: "https://quick-seeker.netlify.app/",
+                homepage: "https://quick-seeker.netlify.app/",
+                github: "https://github.com/xellanix/quick-seeker/",
             },
         },
         {
@@ -248,19 +251,10 @@ export const personalData = {
             ],
             description:
                 "A portfolio that shows some of the skills and results acquired by me during my journey from school to now.",
+            hero: "./projects/my-porto/index.png",
             link: {
-                label: "",
-                href: "",
-            },
-        },
-        {
-            title: "Xellanix Library",
-            techStack: ["C++", "Windows"],
-            description:
-                "A C++ library for regular use, made by xellanix (currently in under development).",
-            link: {
-                label: "github.com",
-                href: "https://github.com/xellanix/xellanix-lib",
+                homepage: "https://donnyandrian.github.io/",
+                github: "https://github.com/donnyandrian/donnyandrian.github.io",
             },
         },
         {
@@ -268,19 +262,9 @@ export const personalData = {
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A utility application for merging multiple images from a file or clipboard, including screenshots, into a new file.",
+            hero: "./projects/image-merge/index.png",
             link: {
-                label: "github.com",
-                href: "https://github.com/xellanix/imagemerger",
-            },
-        },
-        {
-            title: "Xellanix MasterTools",
-            techStack: ["C++", "WinUI 2", "WinRT"],
-            description:
-                "An application with a set of unique and creative features, made with intention and love.",
-            link: {
-                label: "github.com",
-                href: "https://github.com/xellanix/mastertools",
+                github: "https://github.com/xellanix/imagemerger",
             },
         },
         {
@@ -288,9 +272,9 @@ export const personalData = {
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A simple app to quickly capture colors on the screen, as well as provide several color variants related to the selected color.",
+            hero: "./projects/pick-color/index.png",
             link: {
-                label: "github.com",
-                href: "https://github.com/xellanix/pickcolor-src",
+                github: "https://github.com/xellanix/pickcolor-src",
             },
         },
         {
@@ -298,9 +282,9 @@ export const personalData = {
             techStack: ["C++", "Windows App SDK", "WinRT"],
             description:
                 "A utility application for renaming multiple files (and folders) at once with the desired format, such as order, date, etc.",
+            hero: "./projects/quick-rename/index.png",
             link: {
-                label: "github.com",
-                href: "https://github.com/xellanix/quickrename-src",
+                github: "https://github.com/xellanix/quickrename-src",
             },
         },
     ],

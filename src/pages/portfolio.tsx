@@ -28,6 +28,7 @@ import ClassName from "embla-carousel-class-names";
 import { useMemo, useRef, useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Separator } from "@/components/ui/separator";
+import { SwitchIconLink } from "@/lib/link-icon-switcher";
 
 const _vLeftToNormal: Variants = {
     hidden: { opacity: 0, x: -50 },
@@ -494,7 +495,11 @@ function ProjectCarousel({
                                 }
                             >
                                 <div className="bg-accent text-card-foreground flex rounded-md border-4 aspect-video opacity-30 transition-all duration-300 ease-out in-[.is-snapped]:opacity-100">
-                                    {index}
+                                    <img
+                                        src={project.hero}
+                                        alt={project.title}
+                                        className="object-cover size-full"
+                                    />
                                 </div>
                             </m.div>
 
@@ -521,6 +526,35 @@ function ProjectCarousel({
                                 >
                                     {project.description}
                                 </m.p>
+                                <m.div
+                                    className={
+                                        "text-xs xs:text-sm xs:mx-12 flex gap-4 justify-center"
+                                    }
+                                    variants={_vRightCustomToNormal}
+                                >
+                                    {Object.entries(project.link).map(
+                                        ([target, href]) => (
+                                            <Button
+                                                variant={"link"}
+                                                size={"sm"}
+                                                asChild
+                                            >
+                                                <a
+                                                    href={href}
+                                                    target="_blank"
+                                                    rel="noreferrer noopener"
+                                                >
+                                                    <HugeiconsIcon
+                                                        icon={SwitchIconLink(
+                                                            target,
+                                                        )}
+                                                        strokeWidth={2}
+                                                    />
+                                                </a>
+                                            </Button>
+                                        ),
+                                    )}
+                                </m.div>
                             </m.div>
                         </CarouselItem>
                     ))}
